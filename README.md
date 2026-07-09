@@ -1,6 +1,6 @@
-## LMGNU
----
+# LMGNU
 
+---
 <img width="2149" height="732" alt="lmgnu" src="https://github.com/user-attachments/assets/c96f6019-44d7-4633-81e3-910208c588cf" />
 
 ---
