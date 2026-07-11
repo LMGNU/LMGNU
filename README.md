@@ -8,6 +8,8 @@ The `lmgnu` repository implements a programmatic framework for executing multi-d
 When expressions are executed forward, operations between `ScalarNode` or `Tensor` objects dynamically build an acyclic directed graph ($\text{DAG}$). Each operation instantiates a new node containing explicit pointers (`_parents`) to the precise variables that formed it, along with a localized derivative evaluation closure (`_backprop`). 
 
 This mechanism acts as a live computational tape, tracking the complete operational lineage of the network's variables in real-time.
+
+
 [Leaf Node: Weight] ----
 +---> [Operation Node: Mul] ---> [Output Node]
 [Leaf Node: Input]  -
