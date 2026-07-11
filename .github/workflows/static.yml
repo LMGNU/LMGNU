@@ -14,6 +14,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -27,13 +28,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # Creates an isolated folder and renames README.md to index.html so Pages serves it by default
+      - name: Prepare Deployment Directory
+        run: |
+          mkdir public
+          cp README.md public/index.html
+
+      # Configures internal routing tokens for GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+      # Target the newly created directory containing your file
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          
-          path: 'README.md'
+          path: 'public'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
