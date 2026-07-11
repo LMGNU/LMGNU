@@ -1,5 +1,4 @@
 # lmgnu
-
 The `lmgnu` repository implements a programmatic framework for executing multi-dimensional automatic differentiation ($\text{Autograd}$) and training feedforward neural topologies natively without external runtime library dependencies. The repository achieves this through two highly integrated layers:
 1. **The Primal Scalar Engine (`ScalarNode`)**: At the foundational layer, every mathematical primitive is encapsulated within a custom node object that tracks its own forward-pass evaluation value ($x$) and its analytical partial derivative ($\frac{\partial \mathcal{L}}{\partial x}$).
 2. **The Tensor Multi-Dimensional Grid (`Tensor`)**: Higher-level operations scale these scalar entities into structured 2D matrices, providing clean abstractions for linear transformations, broadcasted additions, and matrix multiplication ($\text{MatMul}$) while inherently preserving backpropagation hooks across the underlying grid coordinates.
@@ -13,6 +12,46 @@ This mechanism acts as a live computational tape, tracking the complete operatio
 [Leaf Node: Weight] ----
 +---> [Operation Node: Mul] ---> [Output Node]
 [Leaf Node: Input]  -
+```mermaid
+graph TD
+    subgraph ComputationGraph ["Dynamic Scalar Computation Graph"]
+        direction TB
+        InputNode("input x (ScalarNode)")
+        WeightNode("weight w (ScalarNode)")
+        BiasNode("bias b (ScalarNode)")
+        
+        MulNode{"w * x (Multiplication)"}
+        AddNode{"+ b (Addition)"}
+        ReluNode{"max(0, val) (ReLU)"}
+        OutputNode("output y (ScalarNode)")
+        
+        %% Forward Pass Connections
+        InputNode -->|forward| MulNode
+        WeightNode -->|forward| MulNode
+        MulNode -->|forward| AddNode
+        BiasNode -->|forward| AddNode
+        AddNode -->|forward| ReluNode
+        ReluNode -->|forward| OutputNode
+        
+        %% Backward Pass / Gradient Flow Connections
+        OutputNode ==>|backward / 1.0 grad| ReluNode
+        ReluNode ==>|gradient flow| AddNode
+        AddNode ==>|gradient flow| MulNode
+        AddNode ==>|bias gradient| BiasNode
+        MulNode ==>|weight gradient| WeightNode
+        MulNode ==>|input gradient| InputNode
+
+        %% Define Node Styles
+        style InputNode fill:#e1f5fe,stroke:#01579b,color:#01579b
+        style WeightNode fill:#fff9c4,stroke:#fbc02d,color:#fbc02d
+        style BiasNode fill:#fff9c4,stroke:#fbc02d,color:#fbc02d
+        style OutputNode fill:#f8bbd0,stroke:#880e4f,color:#880e4f
+        
+        %% Link Customizations
+        linkStyle 0,1,2,3,4,5 stroke:#4fc3f7,stroke-width:2px,stroke-dasharray: 5 5;
+        linkStyle 6,7,8,9,10,11 stroke:#ec407a,stroke-width:2.5px;
+    end
+```
 
 ### 2. Reverse-Mode Automatic Differentiation
 Backpropagation is initiated by calling the `.backward()` method on a terminal objective node (typically a calculated scalar loss value). The execution engine triggers a depth-first search ($\text{DFS}$) across the operational graph to resolve a valid topological sort. 
