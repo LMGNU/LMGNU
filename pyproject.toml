@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lmgnu"
+version = "0.1.0"
+description = "A multi-dimensional automatic differentiation and neural network engine executing over a dynamic, scalar-level computational graph."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+    { name = "Eamon", email = "eamon112009@gmail.com" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["lmgnu*"]
