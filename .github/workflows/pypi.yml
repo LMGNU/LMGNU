@@ -1,13 +1,20 @@
-name: PyPI
+name: Manual Publish to PyPI
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
+
 permissions:
   contents: read
+  id-token: write 
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
+    environment:
+      name: pypi
+      url: https://pypi.org/project/lmgnu/ 
+      
     steps:
     - uses: actions/checkout@v4
     
