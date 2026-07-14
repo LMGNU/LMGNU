@@ -23,3 +23,7 @@ dependencies = []
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["lmgnu*"]
+
+[project.urls]
+Homepage = "https://github.com/LMGNU/LMGNU"
+Repository = "https://github.com/LMGNU/LMGNU"
