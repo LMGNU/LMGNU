@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lmgnu"
-version = "1.0.2"
+version = "1.0.3"
 description = "A multi-dimensional automatic differentiation and neural network engine executing over a dynamic, scalar-level computational graph."
 readme = "README.md"
 requires-python = ">=3.8"
